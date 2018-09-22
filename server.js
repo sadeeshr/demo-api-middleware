@@ -12,8 +12,6 @@ app.use(function (req, res, next) {
     console.log(req.headers.authorization);
     if (!req.headers.authorization) {
         return res.status(403).json({ error: 'No Credentials' });
-    } else if (config.token.client !== req.headers.authorization) {
-        return res.status(403).json({ error: 'Invalid Authorization' });
     }
     next();
 });
@@ -23,6 +21,9 @@ app.post('/', (req, res) => res.sendStatus(404))
 
 app.post('/_api/put/', function (req, res) {
     console.log(req.body);
+    if (config.token.provider !== req.headers.authorization) {
+        return res.status(403).json({ error: 'Invalid Authorization' });
+    }
     if (req.body && Object.keys(req.body).length !== 0) {
         let data = req.body
         if (data.mobileNum) {
@@ -39,6 +40,9 @@ app.post('/_api/put/', function (req, res) {
 });
 
 app.get('/_api/get/:phone', function (req, res) {
+    if (config.token.client !== req.headers.authorization) {
+        return res.status(403).json({ error: 'Invalid Authorization' });
+    }
     rclient.hgetall(req.params.phone, function (err, reply) {
         if (err)
             console.error(err);
