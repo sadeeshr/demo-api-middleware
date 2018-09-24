@@ -24,7 +24,7 @@ app.post('/_api/put/', function (req, res) {
     // if (config.token.provider !== req.headers.authorization) {
     //     return res.status(403).json({ error: 'Invalid Authorization' });
     // }
-    if (config.vendorIPWhiteList.indexOf(req.ip) === -1) {
+    if (config.vendorIPWhiteList.indexOf(req.ip.split(':').pop()) === -1) {
         return res.status(403).json({ error: 'Invalid IP Address' });
     }
     if (req.body && Object.keys(req.body).length !== 0) {
@@ -46,7 +46,7 @@ app.get('/_api/get/:phone', function (req, res) {
     // if (config.token.client !== req.headers.authorization) {
     //     return res.status(403).json({ error: 'Invalid Authorization' });
     // }
-    if (config.clientIPWhiteList.indexOf(req.ip) === -1) {
+    if (config.clientIPWhiteList.indexOf(req.ip.split(':').pop()) === -1) {
         return res.status(403).json({ error: 'Invalid IP Address ' + req.ip });
     }
     rclient.hgetall(req.params.phone, function (err, reply) {
