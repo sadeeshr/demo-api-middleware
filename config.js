@@ -8,5 +8,13 @@ module.exports = {
   token: {
     provider: 'I5m7bS8+VfEmqlFv0YEdpx6I6SNl8lj6eE3BDxsmDQTWJFkmzVyqbfopV620v4NkCYdujmGlp12EH5qE',
     client: 'IHHdEAkjg2NozFNsgLHJWhZFPW5K9jqaARWUB0y5jSw2d12dY4ysdLK5a5rnMQszMm2+kw5z1Lf+W4CB'
-  }
+  },
+  vendorIPWhiteList: [
+    "114.108.201.50", //sadeesh
+    "103.17.181.123",
+    "103.17.181.124"
+  ],
+  clientIPWhiteList: [
+    "114.108.201.50", //sadeesh
+  ]
 };
