@@ -2,21 +2,22 @@ const express = require('express')
 const cors = require('cors')
 const redis = require('redis')
 const config = require('./config');
-
+const path = require('path')
 const app = express()
 const rclient = redis.createClient({ password: config.db.secret })
 
 app.use(express.json());
 app.use(cors())
-app.use(function (req, res, next) {
+/*app.use(function (req, res, next) {
     console.log(req.headers.authorization);
     if (!req.headers.authorization) {
         return res.status(403).json({ error: 'No Credentials' });
     }
     next();
 });
-
+*/
 app.get('/', (req, res) => res.sendStatus(404))
+app.get('/loaderio-cf23489ab7c0814313259dcc08b16468', (req, res) => res.sendFile(path.join(__dirname, '../_api', "loaderio-cf23489ab7c0814313259dcc08b16468.txt")))
 app.post('/', (req, res) => res.sendStatus(404))
 
 app.post('/_api/put/', function (req, res) {
