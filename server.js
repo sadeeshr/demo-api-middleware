@@ -2,11 +2,15 @@ const express = require('express')
 const cors = require('cors')
 const redis = require('redis')
 const config = require('./config');
+const xmlparser = require('express-xml-bodyparser');
+const convert = require('xml-js');
 
 const app = express()
 const rclient = redis.createClient({ password: config.db.secret })
 
 app.use(express.json());
+app.use(express.urlencoded());
+app.use(xmlparser());
 app.use(cors())
 // app.use(function (req, res, next) {
 //     console.log(req.headers.authorization);
@@ -21,6 +25,10 @@ app.post('/', (req, res) => res.sendStatus(404))
 
 app.post('/_api/put/', function (req, res) {
     console.log(req.body);
+    let xml = req.body
+    var result1 = convert.xml2json(xml, { compact: true, spaces: 4 });
+    var result2 = convert.xml2json(xml, { compact: false, spaces: 4 });
+    console.log(result1, '\n', result2);
     // if (config.token.provider !== req.headers.authorization) {
     //     return res.status(403).json({ error: 'Invalid Authorization' });
     // }
