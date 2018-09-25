@@ -4,6 +4,7 @@ const redis = require('redis')
 const config = require('./config');
 const xmlparser = require('express-xml-bodyparser');
 const convert = require('xml-js');
+const util = require('util')
 
 const app = express()
 const rclient = redis.createClient({ password: config.db.secret })
@@ -24,11 +25,13 @@ app.get('/', (req, res) => res.sendStatus(404))
 app.post('/', (req, res) => res.sendStatus(404))
 
 app.post('/_api/put/', function (req, res) {
-    console.log(req.body);
+//    console.log(req.body["soap:envelope"]["soap:body"]);
+console.log(util.inspect(req.body["soap:envelope"]["soap:body"], false, null, true /* enable colors */))
+
     let xml = req.body
-    var result1 = convert.xml2json(xml, { compact: true, spaces: 4 });
-    var result2 = convert.xml2json(xml, { compact: false, spaces: 4 });
-    console.log(result1, '\n', result2);
+//    var result1 = convert.xml2json(xml, { compact: true, spaces: 4 });
+//    var result2 = convert.xml2json(xml, { compact: false, spaces: 4 });
+//    console.log(result1, '\n', result2);
     // if (config.token.provider !== req.headers.authorization) {
     //     return res.status(403).json({ error: 'Invalid Authorization' });
     // }
