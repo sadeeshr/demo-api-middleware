@@ -32,7 +32,7 @@ app.post('/_api/put/', function (req, res) {
     }
     if (req.body && Object.keys(req.body).length !== 0) {
         console.log(util.inspect(req.body, false, null, true /* enable colors */))
-        let singleNumber = req.body["soap:envelope"]["soap:body"][0]["ns2:broadcast"][0]["singlenumber"]["number"]
+        let singleNumber = req.body["soap:envelope"]["soap:body"][0]["ns2:broadcast"][0]["singlenumber"][0]["number"][0]
         console.log("##### NUMBER ##### ", singleNumber)
 
         if (singleNumber) {
