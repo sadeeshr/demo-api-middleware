@@ -17,7 +17,6 @@ app.use(cors())
 // });
 
 app.get('/', (req, res) => res.sendStatus(404))
-app.get('/loaderio-cf23489ab7c0814313259dcc08b16468', (req, res) => res.sendFile(path.join(__dirname, '../_api', "loaderio-cf23489ab7c0814313259dcc08b16468.txt")))
 app.post('/', (req, res) => res.sendStatus(404))
 
 app.post('/_api/put/', function (req, res) {
