@@ -29,6 +29,7 @@ app.post('/_api/put/', function (req, res) {
     if (req.body && Object.keys(req.body).length !== 0) {
         console.log(util.inspect(req.body, false, null, true /* enable colors */))
         let singleNumber = req.body["soap:envelope"]["soap:body"][0]["ns2:broadcast"][0]["singlenumber"][0]["number"][0]
+        //let singleNumber = req.body["soap:envelope"]["soap:body"][0]["ns2:broadcast"][0]["singlenumber"][0]
         console.log("##### NUMBER ##### ", singleNumber)
 
         if (singleNumber) {
@@ -42,7 +43,7 @@ app.post('/_api/put/', function (req, res) {
             // })
 
             // MONGO
-            mongo.db[config.mongo.db].insert(
+            mongo.db["mnpNumbers"].insert(
                 {
                     number: singleNumber,
                     soapData: req.body
@@ -76,9 +77,9 @@ app.get('/_api/get/:phone', function (req, res) {
     //             return res.status(200).json(reply);
     //     }
     // });
-
+console.log("############", req.params.phone)
     // MONGO
-    mongo.db[config.mongo.db].find({ number: req.params.phone }, (err, data) => {
+    mongo.db["mnpNumbers"].find({ number: req.params.phone }, (err, data) => {
         if (err || !data) {
             console.error(err || "NO DATA");
             return res.status(200).json({ number: req.params.phone, error: 'NO DATA FOUND' });
