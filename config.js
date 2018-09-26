@@ -16,6 +16,7 @@ module.exports = {
   clientIPWhiteList: [
     "1",
     "114.108.201.50", //sadeesh
+    "111.68.50.68",	
   ],
   sample: {
     'soap:envelope':
