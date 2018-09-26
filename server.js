@@ -4,7 +4,6 @@ const redis = require('redis')
 const config = require('./config');
 const xmlparser = require('express-xml-bodyparser');
 const util = require('util')
-
 const app = express()
 const rclient = redis.createClient({ password: config.db.secret })
 
@@ -32,11 +31,12 @@ app.post('/_api/put/', function (req, res) {
     }
     if (req.body && Object.keys(req.body).length !== 0) {
         console.log(util.inspect(req.body, false, null, true /* enable colors */))
-        let singleNumber = req.body["soap:envelope"]["soap:body"][0]["ns2:broadcast"][0]["singlenumber"][0]["number"][0]
+        //let singleNumber = req.body["soap:envelope"]["soap:body"][0]["ns2:broadcast"][0]["singlenumber"][0]["number"][0]
+        let singleNumber = req.body["soap:envelope"]["soap:body"][0]["ns2:broadcast"][0]["singlenumber"][0]
         console.log("##### NUMBER ##### ", singleNumber)
 
         if (singleNumber) {
-            rclient.hmset(singleNumber, req.body, function (err, reply) {
+            rclient.hmset(singleNumber["number"][0], singleNumber, function (err, reply) {
                 if (err)
                     console.error(err)
                 else
