@@ -29,8 +29,9 @@ app.post('/_api/put/', function (req, res) {
     if (req.body && Object.keys(req.body).length !== 0) {
         console.log(util.inspect(req.body, false, null, true /* enable colors */))
         let singleNumber = req.body["soap:envelope"]["soap:body"][0]["ns2:broadcast"][0]["singlenumber"][0]["number"][0]
+        let portedDate = req.body["soap:envelope"]["soap:body"][0]["ns2:broadcast"][0]["porteddate"][0]
         //let singleNumber = req.body["soap:envelope"]["soap:body"][0]["ns2:broadcast"][0]["singlenumber"][0]
-        console.log("##### NUMBER ##### ", singleNumber)
+        console.log("##### NUMBER ##### ", singleNumber, portedDate)
 
         if (singleNumber) {
             // REDIS
@@ -46,6 +47,7 @@ app.post('/_api/put/', function (req, res) {
             mongo.db["mnpNumbers"].insert(
                 {
                     number: singleNumber,
+                    timestamp: portedDate,
                     soapData: req.body
                 }, (err, reply) => {
                     if (err || !reply)
@@ -77,7 +79,7 @@ app.get('/_api/get/:phone', function (req, res) {
     //             return res.status(200).json(reply);
     //     }
     // });
-console.log("############", req.params.phone)
+    console.log("############", req.params.phone)
     // MONGO
     mongo.db["mnpNumbers"].find({ number: req.params.phone }, (err, data) => {
         if (err || !data) {
