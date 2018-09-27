@@ -81,7 +81,7 @@ app.get('/_api/get/:phone', function (req, res) {
     // });
     console.log("############", req.params.phone)
     // MONGO
-    mongo.db["mnpNumbers"].find({ number: req.params.phone }, (err, data) => {
+    mongo.db["mnpNumbers"].findOne({ number: req.params.phone }, (err, data) => {
         if (err || !data) {
             console.error(err || "NO DATA");
             return res.status(200).json({ number: req.params.phone, error: 'NO DATA FOUND' });
