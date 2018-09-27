@@ -30,8 +30,22 @@ app.post('/_api/put/', function (req, res) {
         console.log(util.inspect(req.body, false, null, true /* enable colors */))
         let singleNumber = req.body["soap:envelope"]["soap:body"][0]["ns2:broadcast"][0]["singlenumber"][0]["number"][0]
         let portedDate = req.body["soap:envelope"]["soap:body"][0]["ns2:broadcast"][0]["porteddate"][0]
+        let messageID = req.body["soap:envelope"]["soap:body"][0]["ns2:broadcast"][0]["messageheader"][0]["messageid"][0]
+        let xmlResponse = `<soap:Envelope
+                                xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+                                <soap:Body>
+                                    <ns2:AcknowledgeMessage
+                                        xmlns:ns2="http://portability.teletech.si">
+                                        <messageID>${messageID}</messageID>
+                                        <status>
+                                            <code>0</code>
+                                            <description>ok</description>
+                                        </status>
+                                    </ns2:AcknowledgeMessage>
+                                </soap:Body>
+                            </soap:Envelope>`
         //let singleNumber = req.body["soap:envelope"]["soap:body"][0]["ns2:broadcast"][0]["singlenumber"][0]
-        console.log("##### NUMBER ##### ", singleNumber, portedDate)
+        console.log("##### NUMBER ##### ", singleNumber, portedDate, xmlResponse)
 
         if (singleNumber) {
             // REDIS
@@ -54,7 +68,9 @@ app.post('/_api/put/', function (req, res) {
                         console.log(err);
                     else
                         console.log(reply);
-                    return res.sendStatus(200)
+                    // return res.sendStatus(200)
+                    res.type('application/xml');
+                    return res.status(200).send(xmlResponse);
                 })
         }
     } else
