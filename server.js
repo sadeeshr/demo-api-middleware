@@ -109,9 +109,9 @@ app.get('/_api/get/:phone', function (req, res) {
             if (!data)
                 return res.status(200).json({ number: req.params.phone, error: 'NO DATA FOUND' });
             else
-                // return res.status(200).json(reply); // json response
-                res.type('application/xml');
-            return res.status(200).send(builder.buildObject(data)); // xml response
+               return res.status(200).json(data); // json response
+               //res.type('application/xml');
+           //return res.status(200).send(builder.buildObject(data.soapData)); // xml response
         }
     });
 
