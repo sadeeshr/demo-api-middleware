@@ -106,7 +106,7 @@ app.get('/_api/get/:phone', function (req, res) {
         }
         else {
             console.log(data);
-            if (!reply)
+            if (!data)
                 return res.status(200).json({ number: req.params.phone, error: 'NO DATA FOUND' });
             else
                 // return res.status(200).json(reply); // json response
