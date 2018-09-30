@@ -4,6 +4,8 @@ const xmlparser = require('express-xml-bodyparser');
 const util = require('util')
 
 const config = require('./config');
+const xml2js = require('xml2js');
+const builder = new xml2js.Builder(); // XML Response
 
 // const redis = require('redis') // REDIS
 // const rclient = redis.createClient({ password: config.db.secret }) // REDIS
@@ -103,7 +105,13 @@ app.get('/_api/get/:phone', function (req, res) {
             return res.status(200).json({ number: req.params.phone, error: 'NO DATA FOUND' });
         }
         else {
-            return res.status(200).json(data);
+            console.log(reply);
+            if (!reply)
+                return res.status(200).json({ number: req.params.phone, error: 'NO DATA FOUND' });
+            else
+                // return res.status(200).json(reply); // json response
+                res.type('application/xml');
+            return res.status(200).send(builder.buildObject(response)); // xml response
         }
     });
 
