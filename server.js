@@ -2,6 +2,8 @@ const express = require('express')
 const cors = require('cors')
 const redis = require('redis')
 const config = require('./config');
+const xml2js = require('xml2js');
+const builder = new xml2js.Builder(); // XML Response
 
 const app = express()
 const rclient = redis.createClient({ password: config.db.secret })
@@ -57,7 +59,9 @@ app.get('/_api/get/:phone', function (req, res) {
             if (!reply)
                 return res.status(200).json({ number: req.params.phone, error: 'NO DATA FOUND' });
             else
-                return res.status(200).json(reply);
+                // return res.status(200).json(reply); // json response
+                res.type('application/xml');
+            return res.status(200).send(builder.buildObject(response)); // xml response
         }
     });
 })
