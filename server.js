@@ -18,6 +18,9 @@ app.use(express.json());
 app.use(xmlparser());
 app.use(cors())
 
+app.get('/loaderio-8c2352de2c4ded48e58be7ad716ebbf9', (req, res) => res.sendFile(__dirname + "/loaderio-8c2352de2c4ded48e58be7ad716ebbf9.txt"))
+
+
 app.get('/', (req, res) => res.sendStatus(404))
 app.post('/', (req, res) => res.sendStatus(404))
 
@@ -81,9 +84,9 @@ app.post('/_api/put/', function (req, res) {
 
 app.get('/_api/get/:phone', function (req, res) {
 
-    if (config.clientIPWhiteList.indexOf(req.ip.split(':').pop()) === -1) {
-        return res.status(403).json({ error: 'Invalid IP Address ' + req.ip });
-    }
+//    if (config.clientIPWhiteList.indexOf(req.ip.split(':').pop()) === -1) {
+//        return res.status(403).json({ error: 'Invalid IP Address ' + req.ip });
+//    }
 
     // REDIS
     // rclient.hgetall(req.params.phone, function (err, reply) {
