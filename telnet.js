@@ -1,32 +1,41 @@
-const Telnet = require('telnet-client')
-const connection = new Telnet()
-let timer = null
+const net = require("net")
 
-const params = {
-    host: '103.17.181.123',
-    port: 8080,
-    // shellPrompt: '/ # ',
-    timeout: 1500,
-    // removeEcho: 4
+let client = new net.Socket()
+
+function connect() {
+    console.log("new client")
+    client.connect(
+        8080,
+        '103.17.181.123',
+        () => {
+            console.log("Connected")
+            // client.write("Hello, server! Love, Client.")
+        }
+    )
+
+    client.on("data", data => {
+        console.log("Received: " + data)
+    })
+
+    client.on("close", () => {
+        console.log("Connection closed")
+        reconnect()
+    })
+
+    client.on("end", () => {
+        console.log("Connection ended")
+        reconnect()
+    })
+
+    client.on("error", console.error)
 }
 
-connection.on('ready', function (prompt) {
-    console.log('server connnected !')
-    // if (timer)
-    // clearInterval(timer)
-})
-
-connection.on('timeout', function () {
-    console.log('server connection timeout!')
-    connection.end()
-    // timer = setInterval(() => connection.connect(params), 2000);
-})
-
-connection.on('close', function () {
-    console.log('server connection closed')
+// function that reconnect the client to the server
+reconnect = () => {
     setTimeout(() => {
-        connection.connect(params)
-    }, 600000); // 10 mins
-})
+        client.removeAllListeners() // the important line that enables you to reopen a connection
+        connect()
+    }, 600000) // 10 mins
+}
 
-connection.connect(params)
+connect()
