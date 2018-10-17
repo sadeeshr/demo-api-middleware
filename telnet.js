@@ -10,6 +10,7 @@ function connect() {
         () => {
             console.log("Connected")
             // client.write("Hello, server! Love, Client.")
+            client.end("INFIZILLION KEEP-ALIVE REQUEST")
         }
     )
 
@@ -32,10 +33,8 @@ function connect() {
 
 // function that reconnect the client to the server
 reconnect = () => {
-    setTimeout(() => {
-        client.removeAllListeners() // the important line that enables you to reopen a connection
-        connect()
-    }, 600000) // 10 mins
+    client.removeAllListeners() // the important line that enables you to reopen a connection
+    connect()
 }
 
 connect()
