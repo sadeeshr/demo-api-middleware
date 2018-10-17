@@ -1,39 +1,33 @@
 const net = require("net")
+const SERVER = "103.17.181.123"
+const PORT = 8080
 
 let client = new net.Socket()
 
 function connect() {
-    console.log("new client")
+    console.log("[" + SERVER + ":" + PORT + "] " + "Telnet Connection STARTED")
     client.connect(
-        8080,
-        '103.17.181.123',
+        PORT,
+        SERVER,
         () => {
-            console.log("Connected")
-            // client.write("Hello, server! Love, Client.")
+            console.log("[" + SERVER + ":" + PORT + "] " + "Telnet CONNECTED")
             client.end("INFIZILLION KEEP-ALIVE REQUEST")
+            setTimeout(reconnect, 300000);
         }
     )
 
-    client.on("data", data => {
-        console.log("Received: " + data)
-    })
+    client.on("data", data => console.log("[" + SERVER + ":" + PORT + "] " + "Telnet DATA", " Received: " + data))
 
-    client.on("close", () => {
-        console.log("Connection closed")
-        reconnect()
-    })
+    client.on("close", () => console.log("[" + SERVER + ":" + PORT + "] " + "Telnet Connection CLOSED"))
 
-    client.on("end", () => {
-        console.log("Connection ended")
-        reconnect()
-    })
+    client.on("end", () => console.log("[" + SERVER + ":" + PORT + "] " + "Telnet Connection ENDED"))
 
     client.on("error", console.error)
 }
 
-// function that reconnect the client to the server
 reconnect = () => {
-    client.removeAllListeners() // the important line that enables you to reopen a connection
+    console.log("[" + SERVER + ":" + PORT + "] " + "Telnet RECONNECT")
+    client.removeAllListeners()
     connect()
 }
 
