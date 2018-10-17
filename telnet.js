@@ -26,7 +26,7 @@ function connect() {
 
     client.on("end", () => {
         console.log("[" + SERVER + ":" + PORT + "] " + "Telnet Connection ENDED")
-        reconnect()
+//        reconnect()
     })
 
     client.on("error", console.error)
