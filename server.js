@@ -84,9 +84,9 @@ app.post('/_api/put/', function (req, res) {
 
 app.get('/_api/get/:phone', function (req, res) {
 
-//    if (config.clientIPWhiteList.indexOf(req.ip.split(':').pop()) === -1) {
-//        return res.status(403).json({ error: 'Invalid IP Address ' + req.ip });
-//    }
+    //    if (config.clientIPWhiteList.indexOf(req.ip.split(':').pop()) === -1) {
+    //        return res.status(403).json({ error: 'Invalid IP Address ' + req.ip });
+    //    }
 
     // REDIS
     // rclient.hgetall(req.params.phone, function (err, reply) {
@@ -102,7 +102,7 @@ app.get('/_api/get/:phone', function (req, res) {
     // });
     console.log("############", req.params.phone)
     // MONGO
-    mongo.db["mnpNumbers"].findOne({ number: req.params.phone }, (err, data) => {
+    mongo.db["mnpNumbers"].find({ number: req.params.phone }).sort({ _id: -1 }).limit(1, (err, data) => {
         if (err || !data) {
             console.error(err || "NO DATA");
             return res.status(200).json({ number: req.params.phone, error: 'NO DATA FOUND' });
