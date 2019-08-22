@@ -13,6 +13,13 @@ const mongo = require('./mongo') // MONGO
 
 const app = express()
 
+app.use((req, res, next) => {
+    console.log("### REQUEST ###")	
+    console.log(util.inspect(req.body, false, null, true /* enable colors */))
+    console.log(util.inspect(req.rawBody, false, null, true /* enable colors */))
+    next()
+});
+
 app.use(express.json());
 // app.use(express.urlencoded());
 app.use(xmlparser());
