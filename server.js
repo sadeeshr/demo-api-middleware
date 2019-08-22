@@ -14,7 +14,7 @@ const mongo = require('./mongo') // MONGO
 const app = express()
 
 app.use((req, res, next) => {
-    console.log("### REQUEST ###")	
+    console.log("### REQUEST ###")
     console.log(util.inspect(req.body, false, null, true /* enable colors */))
     console.log(util.inspect(req.rawBody, false, null, true /* enable colors */))
     next()
@@ -110,15 +110,16 @@ app.get('/_api/get/:phone', function (req, res) {
     console.log("############", req.params.phone)
     // MONGO
     mongo.db["mnpNumbers"].find({ number: req.params.phone }).sort({ _id: -1 }).limit(1, (err, data) => {
-        if (err || !data) {
+        if (err || !data || (data.length === 0)) {
             console.error(err || "NO DATA");
             return res.status(200).json({ number: req.params.phone, error: 'NO DATA FOUND' });
         }
         else {
             console.log(data);
-            if (!data)
+            if (!data || (data.length === 0))
                 return res.status(200).json({ number: req.params.phone, error: 'NO DATA FOUND' });
             else {
+                data = data[0]
                 // return res.status(200).json(reply); // json response
                 let response = JSON.stringify(data.soapData).replace(/\_\$/g, "$")
                 res.type('application/xml');
